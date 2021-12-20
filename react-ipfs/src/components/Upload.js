@@ -25,26 +25,14 @@ export default class Upload extends Component {
 
     // upload to IPFS
     upload = async (event) => {
-        console.log(this.state.selectedFile)
 
         console.log("upload pressed")
         console.log(await client.version())
-        
-        // const reader = new window.FileReader()
-        // reader.readAsArrayBuffer(this.state.selectedFile)
-        // reader.onloaded = async () => {
-        //     const fileBuffer = Buffer.from(reader.result)
-        //     const hash = await client.add(fileBuffer, (err, fileHash) => {
-        //         return fileHash
-        //     })
-        //     console.log(hash)
-        // }
+    
 
-
-        // await client.add(this.state.selectedFile, (err, fileHash) => {
-        //     this.setState({hash: fileHash})
-        //     console.log(fileHash)
-        // })
+        let hash = await client.add(this.state.selectedFile)
+        console.log(hash.path)
+        this.setState({ hash: hash.path })
     }
 
     render() {
@@ -53,6 +41,8 @@ export default class Upload extends Component {
                 <h1>IPFS Upload</h1>
                 <input type="file" onChange={this.onFileChange} />
                 <button onClick={this.upload}>Upload</button>
+                <hr/>
+                <img alt="upload" src={`https://ipfs.infura.io:5001/api/v0/cat?arg=${this.state.hash}`} />
             </div>
         )
     }
